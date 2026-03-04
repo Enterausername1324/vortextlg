@@ -1,61 +1,56 @@
 (function () {
     "use strict";
 
-    // CONFIGURATION: Replace this with your actual proxy service URL
-    const PROXY_SERVER = "https://your-proxy-service.com/main/";
+    // Your Render Proxy URL
+    const VORTEX_ENGINE = "https://vortex-tbmr.onrender.com";
+    const PREFIX = "/service/"; // Standard Scramjet/UV prefix
 
     const urlInput = document.getElementById("proxy-url");
     const launchBtn = document.getElementById("launch-btn");
-    const nodes = document.querySelectorAll(".node");
 
-    // Function to launch the proxy
-    function launchProxy(targetUrl) {
-        if (!targetUrl) return;
-
-        // Ensure the URL has a protocol
-        let finalUrl = targetUrl.trim();
-        if (!finalUrl.startsWith("http")) {
-            finalUrl = "https://" + finalUrl;
-        }
-
-        console.log("INITIALIZING TUNNEL TO: " + finalUrl);
-
-        // Many proxies use Base64 encoding for the URL to hide it from filters
-        const encodedUrl = btoa(finalUrl);
-        
-        // Redirect the user to the proxy engine
-        window.location.href = PROXY_SERVER + encodedUrl;
+    /**
+     * Scramjet uses a specific XOR encoding to hide URLs from school filters.
+     * This function replicates that encoding so the engine can read it.
+     */
+    function encodeUrl(str) {
+        if (!str) return str;
+        return encodeURIComponent(
+            str.split('').map((char, ind) => 
+                ind % 2 ? String.fromCharCode(char.charCodeAt(0) ^ 2) : char
+            ).join('')
+        );
     }
 
-    // Launch via Button Click
-    launchBtn.addEventListener("click", () => {
-        launchProxy(urlInput.value);
-    });
+    function launchVortex(targetUrl) {
+        if (!targetUrl) return;
 
-    // Launch via "Enter" Key
+        let url = targetUrl.trim();
+        if (!url.startsWith('http')) url = 'https://' + url;
+
+        // Construct the final proxy path
+        // Format: https://vortex-tbmr.onrender.com/service/[ENCODED_URL]
+        const finalPath = VORTEX_ENGINE + PREFIX + encodeUrl(url);
+        
+        console.log("TUNNELING THROUGH VORTEX: " + url);
+        window.location.href = finalPath;
+    }
+
+    // Event Listeners
+    launchBtn.addEventListener("click", () => launchVortex(urlInput.value));
     urlInput.addEventListener("keypress", (e) => {
-        if (e.key === "Enter") {
-            launchProxy(urlInput.value);
-        }
+        if (e.key === "Enter") launchVortex(urlInput.value);
     });
 
-    // Launch via Quick-Link Nodes
-    nodes.forEach(node => {
+    // Handle Quick Nodes
+    document.querySelectorAll(".node").forEach(node => {
         node.addEventListener("click", () => {
             const site = node.innerText.toLowerCase();
-            let target = "";
-
-            // Custom logic for quick links
-            switch(site) {
-                case "discord": target = "discord.com"; break;
-                case "roblox": target = "roblox.com"; break;
-                case "instagram": target = "instagram.com"; break;
-                case "geforce_now": target = "play.geforcenow.com"; break;
-                default: target = site + ".com";
-            }
-            
-            launchProxy(target);
+            const map = {
+                "discord": "discord.com",
+                "roblox": "roblox.com",
+                "geforce_now": "play.geforcenow.com"
+            };
+            launchVortex(map[site] || site + ".com");
         });
     });
-
 })();
