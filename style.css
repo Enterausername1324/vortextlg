@@ -1,37 +1,168 @@
-/* --- SEARCH BAR STYLING --- */
-.search-wrapper {
-    position: relative;
-    margin-bottom: 30px;
-    max-width: 500px;
+:root {
+    --accent: #00ffcc;
+    --bg-black: #050505;
+    --panel-dark: #0f0f0f;
+    --text-gray: #555;
+    --font-main: 'Share Tech Mono', 'Courier New', monospace;
 }
 
-.search-icon {
-    position: absolute;
-    left: 15px;
-    top: 50%;
-    transform: translateY(-50%);
-    font-size: 0.8rem;
-    opacity: 0.5;
+body {
+    background-color: var(--bg-black);
+    color: #fff;
+    font-family: var(--font-main);
+    margin: 0;
+    height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
 }
 
-#proxySearch {
+/* Scanline Effect */
+.scanline {
     width: 100%;
-    background: #111;
-    border: 1px solid var(--border-color);
-    padding: 12px 12px 12px 45px;
-    color: var(--toxic-green);
-    font-family: inherit;
+    height: 100px;
+    z-index: 10;
+    background: linear-gradient(0deg, rgba(0, 255, 204, 0) 0%, rgba(0, 255, 204, 0.05) 50%, rgba(0, 255, 204, 0) 100%);
+    opacity: 0.1;
+    position: absolute;
+    bottom: 100%;
+    animation: scanline 6s linear infinite;
+}
+
+@keyframes scanline {
+    0% { bottom: 100%; }
+    100% { bottom: -100px; }
+}
+
+/* Centered Terminal Box */
+.terminal-wrapper {
+    width: 90%;
+    max-width: 800px;
+    background: var(--panel-dark);
+    border: 1px solid #222;
+    padding: 40px;
+    position: relative;
+    box-shadow: 0 0 50px rgba(0,0,0,1);
+}
+
+.terminal-header {
+    display: flex;
+    justify-content: space-between;
+    font-size: 0.7rem;
+    color: var(--text-gray);
+    margin-bottom: 50px;
+    border-bottom: 1px solid #222;
+    padding-bottom: 10px;
+}
+
+.pulse {
+    width: 8px;
+    height: 8px;
+    background: var(--accent);
+    border-radius: 50%;
+    display: inline-block;
+    margin-right: 10px;
+    box-shadow: 0 0 10px var(--accent);
+    animation: blink 1.5s infinite;
+}
+
+@keyframes blink { 50% { opacity: 0; } }
+
+/* Main UI Elements */
+h1 {
+    font-size: 2.5rem;
+    letter-spacing: 8px;
+    margin: 0;
+    text-align: center;
+    color: var(--accent);
+}
+
+.subtitle {
+    text-align: center;
+    color: var(--text-gray);
     font-size: 0.8rem;
+    letter-spacing: 2px;
+    margin-bottom: 40px;
+}
+
+/* URL Input Area */
+.input-container {
+    display: flex;
+    background: #000;
+    border: 1px solid #333;
+    padding: 5px;
+    margin-bottom: 40px;
+}
+
+.input-prefix {
+    padding: 15px;
+    color: var(--text-gray);
+    font-size: 0.9rem;
+}
+
+input {
+    flex: 1;
+    background: transparent;
+    border: none;
+    color: #fff;
+    font-family: inherit;
+    font-size: 1rem;
     outline: none;
-    transition: var(--transition);
 }
 
-#proxySearch:focus {
-    border-color: var(--toxic-green);
-    box-shadow: 0 0 10px rgba(57, 255, 20, 0.1);
+button#launch-btn {
+    background: var(--accent);
+    border: none;
+    color: #000;
+    font-weight: bold;
+    padding: 0 30px;
+    cursor: pointer;
+    transition: 0.3s;
 }
 
-#proxySearch::placeholder {
-    color: #444;
-    letter-spacing: 1px;
+button#launch-btn:hover {
+    background: #fff;
+    box-shadow: 0 0 20px #fff;
+}
+
+/* Quick Links */
+.quick-links {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 20px;
+}
+
+.link-category span {
+    display: block;
+    font-size: 0.65rem;
+    color: var(--text-gray);
+    margin-bottom: 10px;
+}
+
+.nodes {
+    display: flex;
+    gap: 10px;
+}
+
+.node {
+    background: #111;
+    border: 1px solid #222;
+    color: #fff;
+    padding: 8px 15px;
+    font-size: 0.75rem;
+    cursor: pointer;
+    transition: 0.2s;
+}
+
+.node:hover {
+    border-color: var(--accent);
+    color: var(--accent);
+}
+
+.terminal-footer {
+    margin-top: 50px;
+    text-align: center;
+    font-size: 0.6rem;
+    color: #333;
 }
