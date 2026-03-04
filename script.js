@@ -1,56 +1,46 @@
-(function () {
-    "use strict";
+/**
+ * THE INVISIBLE CLOAKER 
+ * This creates a new window with no history trace.
+ */
+function launchVortex(targetUrl) {
+    if (!targetUrl) return;
 
-    // Your Render Proxy URL
+    let url = targetUrl.trim();
+    if (!url.startsWith('http')) url = 'https://' + url;
+
+    // 1. Encode the URL for your Render Vortex engine
     const VORTEX_ENGINE = "https://vortex-tbmr.onrender.com";
-    const PREFIX = "/service/"; // Standard Scramjet/UV prefix
+    const PREFIX = "/service/";
+    
+    const encodedUrl = VORTEX_ENGINE + PREFIX + encodeUrl(url);
 
-    const urlInput = document.getElementById("proxy-url");
-    const launchBtn = document.getElementById("launch-btn");
-
-    /**
-     * Scramjet uses a specific XOR encoding to hide URLs from school filters.
-     * This function replicates that encoding so the engine can read it.
-     */
-    function encodeUrl(str) {
-        if (!str) return str;
-        return encodeURIComponent(
-            str.split('').map((char, ind) => 
-                ind % 2 ? String.fromCharCode(char.charCodeAt(0) ^ 2) : char
-            ).join('')
-        );
+    // 2. Open the 'About:Blank' window
+    const win = window.open();
+    if (!win || win.closed) {
+        alert("Pop-up blocked! Please allow pop-ups for the Timeloop Terminal.");
+        return;
     }
 
-    function launchVortex(targetUrl) {
-        if (!targetUrl) return;
+    // 3. Style the new window to be a full-screen stealth frame
+    const style = win.document.createElement('style');
+    style.textContent = `
+        body, html { margin: 0; padding: 0; width: 100%; height: 100%; overflow: hidden; background: #000; }
+        iframe { width: 100%; height: 100%; border: none; }
+    `;
+    win.document.head.appendChild(style);
 
-        let url = targetUrl.trim();
-        if (!url.startsWith('http')) url = 'https://' + url;
+    // 4. Create the Iframe that holds the actual proxy
+    const iframe = win.document.createElement('iframe');
+    iframe.src = encodedUrl;
+    win.document.body.appendChild(iframe);
 
-        // Construct the final proxy path
-        // Format: https://vortex-tbmr.onrender.com/service/[ENCODED_URL]
-        const finalPath = VORTEX_ENGINE + PREFIX + encodeUrl(url);
-        
-        console.log("TUNNELING THROUGH VORTEX: " + url);
-        window.location.href = finalPath;
-    }
+    // 5. Change the Tab Title/Icon of the new blank window for extra stealth
+    win.document.title = "Classes - Google Drive";
+    const link = win.document.createElement('link');
+    link.rel = 'icon';
+    link.href = 'https://ssl.gstatic.com/images/branding/product/1x/drive_2020q4_32dp.png';
+    win.document.head.appendChild(link);
 
-    // Event Listeners
-    launchBtn.addEventListener("click", () => launchVortex(urlInput.value));
-    urlInput.addEventListener("keypress", (e) => {
-        if (e.key === "Enter") launchVortex(urlInput.value);
-    });
-
-    // Handle Quick Nodes
-    document.querySelectorAll(".node").forEach(node => {
-        node.addEventListener("click", () => {
-            const site = node.innerText.toLowerCase();
-            const map = {
-                "discord": "discord.com",
-                "roblox": "roblox.com",
-                "geforce_now": "play.geforcenow.com"
-            };
-            launchVortex(map[site] || site + ".com");
-        });
-    });
-})();
+    // Optional: Return to a "safe" page on the original tab
+    window.location.replace("https://google.com");
+}
