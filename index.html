@@ -5,7 +5,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>TIMELOOP // PROXY_VAULT</title>
     <link rel="stylesheet" href="proxy-style.css">
-    <link rel="icon" type="image/png" href="favicon.png">
 </head>
 <body>
 
@@ -13,9 +12,7 @@
         <div class="header-inner">
             <span class="security-badge">ENCRYPTION: AES-256</span>
             <div class="logo">VAULT_SECTOR_01</div>
-            <nav>
-                <a href="index.html">EXIT_TERMINAL</a>
-            </nav>
+            <nav><a href="index.html">EXIT_TERMINAL</a></nav>
         </div>
     </header>
 
@@ -26,17 +23,20 @@
                 <li class="active">/HTTP_PROXIES</li>
                 <li>/SOCKS5_RESERVE</li>
                 <li>/PRIVATE_NODES</li>
-                <li>/PORT_ARCHIVE</li>
             </ul>
         </aside>
 
         <section class="vault-content">
             <div class="content-header">
                 <h1>DIRECTORY: /HTTP_PROXIES</h1>
-                <p>Last indexed: <span id="current-time"></span></p>
+                
+                <div class="search-wrapper">
+                    <span class="search-icon">🔍</span>
+                    <input type="text" id="proxySearch" placeholder="SEARCH IP, PORT, OR LOCATION..." onkeyup="filterTable()">
+                </div>
             </div>
 
-            <div class="data-table">
+            <div class="data-table" id="proxyTable">
                 <div class="table-row head">
                     <span>STATUS</span>
                     <span>IP_ADDRESS</span>
@@ -47,12 +47,48 @@
 
                 <div class="table-row">
                     <span class="status online">● ACTIVE</span>
-                    <span class="ip-text">192.168.1.104</span>
+                    <span class="ip-text">45.77.12.189</span>
                     <span class="port-text">8080</span>
-                    <span>US_EAST</span>
+                    <span class="loc-text">US_EAST</span>
                     <button class="copy-btn">COPY</button>
                 </div>
 
                 <div class="table-row">
                     <span class="status online">● ACTIVE</span>
-                    <span class="ip-text">45.77.12
+                    <span class="ip-text">104.21.45.11</span>
+                    <span class="port-text">3128</span>
+                    <span class="loc-text">EU_WEST</span>
+                    <button class="copy-btn">COPY</button>
+                </div>
+
+                <div class="table-row">
+                    <span class="status offline">○ SHUTDOWN</span>
+                    <span class="ip-text">192.168.1.104</span>
+                    <span class="port-text">80</span>
+                    <span class="loc-text">ASIA_SOUTH</span>
+                    <button class="copy-btn disabled">VOID</button>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <script>
+        function filterTable() {
+            const input = document.getElementById("proxySearch");
+            const filter = input.value.toUpperCase();
+            const table = document.getElementById("proxyTable");
+            const rows = table.getElementsByClassName("table-row");
+
+            // Loop through all rows (skipping the header)
+            for (let i = 1; i < rows.length; i++) {
+                const textContext = rows[i].textContent || rows[i].innerText;
+                if (textContext.toUpperCase().indexOf(filter) > -1) {
+                    rows[i].style.display = "";
+                } else {
+                    rows[i].style.display = "none";
+                }
+            }
+        }
+    </script>
+</body>
+</html>
