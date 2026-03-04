@@ -1,158 +1,37 @@
-/* --- PROXY VAULT THEME --- */
-
-:root {
-    --toxic-green: #39ff14;
-    --vault-bg: #030303;
-    --vault-panel: #0d0d0d;
-    --border-color: #222;
-    --text-dim: #666;
+/* --- SEARCH BAR STYLING --- */
+.search-wrapper {
+    position: relative;
+    margin-bottom: 30px;
+    max-width: 500px;
 }
 
-body {
-    background-color: var(--vault-bg);
-    color: #eee;
-    font-family: 'Fira Code', 'Courier New', monospace;
-    margin: 0;
-    display: flex;
-    flex-direction: column;
-    height: 100vh;
-    overflow: hidden;
+.search-icon {
+    position: absolute;
+    left: 15px;
+    top: 50%;
+    transform: translateY(-50%);
+    font-size: 0.8rem;
+    opacity: 0.5;
 }
 
-/* --- HEADER --- */
-.vault-header {
-    height: 60px;
-    background: #000;
-    border-bottom: 1px solid var(--toxic-green);
-    padding: 0 20px;
-    display: flex;
-    align-items: center;
-}
-
-.header-inner {
+#proxySearch {
     width: 100%;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
+    background: #111;
+    border: 1px solid var(--border-color);
+    padding: 12px 12px 12px 45px;
+    color: var(--toxic-green);
+    font-family: inherit;
+    font-size: 0.8rem;
+    outline: none;
+    transition: var(--transition);
 }
 
-.security-badge {
-    font-size: 0.6rem;
-    color: var(--toxic-green);
-    border: 1px solid var(--toxic-green);
-    padding: 2px 8px;
+#proxySearch:focus {
+    border-color: var(--toxic-green);
+    box-shadow: 0 0 10px rgba(57, 255, 20, 0.1);
+}
+
+#proxySearch::placeholder {
+    color: #444;
     letter-spacing: 1px;
 }
-
-.logo {
-    letter-spacing: 5px;
-    font-weight: bold;
-}
-
-nav a {
-    color: var(--text-dim);
-    text-decoration: none;
-    font-size: 0.75rem;
-}
-
-nav a:hover { color: #fff; }
-
-/* --- MAIN LAYOUT --- */
-.vault-container {
-    display: flex;
-    flex: 1;
-}
-
-.vault-sidebar {
-    width: 240px;
-    background: var(--vault-panel);
-    border-right: 1px solid var(--border-color);
-    padding: 30px 0;
-}
-
-.sidebar-label {
-    font-size: 0.65rem;
-    color: var(--text-dim);
-    padding: 0 25px;
-    margin-bottom: 15px;
-}
-
-.dir-list {
-    list-style: none;
-    padding: 0;
-}
-
-.dir-list li {
-    padding: 12px 25px;
-    font-size: 0.8rem;
-    color: var(--text-dim);
-    cursor: pointer;
-}
-
-.dir-list li.active, .dir-list li:hover {
-    background: rgba(57, 255, 20, 0.05);
-    color: var(--toxic-green);
-    border-left: 3px solid var(--toxic-green);
-}
-
-/* --- DATA CONTENT --- */
-.vault-content {
-    flex: 1;
-    padding: 40px;
-    background-image: radial-gradient(#111 1px, transparent 1px);
-    background-size: 20px 20px;
-}
-
-.content-header h1 {
-    font-size: 1.5rem;
-    margin-bottom: 10px;
-}
-
-.content-header p {
-    font-size: 0.8rem;
-    color: var(--text-dim);
-    margin-bottom: 40px;
-}
-
-/* --- TABLE STYLES --- */
-.data-table {
-    width: 100%;
-    border: 1px solid var(--border-color);
-    background: rgba(0,0,0,0.8);
-}
-
-.table-row {
-    display: grid;
-    grid-template-columns: 1fr 2fr 1fr 1fr 1fr;
-    padding: 15px 20px;
-    border-bottom: 1px solid var(--border-color);
-    align-items: center;
-    font-size: 0.85rem;
-}
-
-.table-row.head {
-    background: #111;
-    color: var(--text-dim);
-    font-size: 0.7rem;
-    text-transform: uppercase;
-}
-
-.status.online { color: var(--toxic-green); text-shadow: 0 0 5px var(--toxic-green); }
-.status.offline { color: #ff0000; opacity: 0.5; }
-
-.copy-btn {
-    background: transparent;
-    border: 1px solid #444;
-    color: #fff;
-    padding: 5px 10px;
-    cursor: pointer;
-    font-family: inherit;
-    font-size: 0.7rem;
-}
-
-.copy-btn:hover {
-    border-color: var(--toxic-green);
-    color: var(--toxic-green);
-}
-
-.disabled { opacity: 0.3; cursor: not-allowed; }
