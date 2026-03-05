@@ -3,39 +3,38 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>TIMELOOP // BYPASS_TERMINAL</title>
+    <title>TIMELOOP // VORTEX_TERMINAL</title>
     <link rel="stylesheet" href="style.css">
-    <link rel="icon" type="image/png" href="favicon.png">
 </head>
 <body>
 
     <header class="sys-header">
         <div class="sys-logo">TIMELOOP.OS</div>
         <nav class="sys-nav">
-            <a href="index.html" class="nav-link">Entry</a>
-            <a href="store.html" class="nav-link">Active_Directory</a>
             <a href="proxy.html" class="nav-link active">Bypass_Terminal</a>
+            <a href="store.html" class="nav-link">Active_Directory</a>
         </nav>
     </header>
 
     <main class="os-container">
         <div class="os-terminal-window">
             <div class="os-term-header">
-                <span class="os-term-dot red"></span>
-                <span class="os-term-dot yellow"></span>
-                <span class="os-term-dot green"></span>
-                <span class="os-term-title">SECURE_UPLINK // VORTEX_ENGINE</span>
+                <div class="dots">
+                    <span class="dot red"></span>
+                    <span class="dot yellow"></span>
+                    <span class="dot green"></span>
+                </div>
+                <div class="os-term-title">SECURE_UPLINK // VORTEX_GATEWAY</div>
             </div>
             
             <div class="os-term-body">
-                <p class="term-log" style="color: var(--neon-cyan)">>> CONNECTION_ESTABLISHED: VORTEX-TBMR</p>
+                <p class="term-log cyan">>> TUNNEL_STATUS: READY</p>
                 <h1 class="term-main-title">PROXY TERMINAL</h1>
-                <p class="term-desc">Enter a destination URL to initialize the stealth tunnel.</p>
                 
                 <div class="input-container">
                     <div class="input-prefix">HTTPS://</div>
-                    <input type="text" id="proxy-url" placeholder="google.com..." autofocus>
-                    <button id="launch-btn" class="sys-btn" style="border:none; padding: 0 25px;">LAUNCH</button>
+                    <input type="text" id="proxy-url" placeholder="ENTER_DESTINATION..." autofocus>
+                    <button id="launch-btn" class="sys-btn">LAUNCH</button>
                 </div>
 
                 <div class="quick-links">
@@ -45,12 +44,14 @@
                     <button class="node">GEFORCE_NOW</button>
                 </div>
 
-                <p class="term-log" style="margin-top: 40px; opacity: 0.2; font-size: 0.6rem;">
-                    CLOAKING_MODE: ABOUT_BLANK // PRESS ESC TO PANIC
-                </p>
+                <p class="term-log footer-note">BYPASS_MODE: ABOUT_BLANK // ESC_TO_PANIC</p>
             </div>
         </div>
     </main>
+
+    <footer class="sys-footer">
+        <p>TIMELOOP THRILL CORP // VORTEX ENGINE v2.0</p>
+    </footer>
 
     <script src="script.js"></script>
 </body>
