@@ -200,53 +200,103 @@ button#launch-btn:hover {
     0% { left: -40%; }
     100% { left: 100%; }
 }
-/* --- THE GATE UI --- */
+/* =========================================
+   SECRET SECTOR ADD-ONS (PROXY & VAULT)
+   ========================================= */
+
+/* The Password Gate Overlay */
 #password-gate {
     position: fixed;
     top: 0; left: 0; 
     width: 100%; height: 100%;
-    background: #050505;
+    background: var(--bg-dark); /* Match main site bg */
     z-index: 99999;
     display: flex;
     align-items: center;
     justify-content: center;
-    transition: opacity 0.5s ease;
+    transition: opacity 0.5s var(--ease);
 }
 
 .gate-content {
     text-align: center;
-    max-width: 400px;
+    max-width: 450px;
     width: 90%;
-}
-
-.lock-icon {
-    font-size: 3rem;
-    margin-bottom: 20px;
-    filter: drop-shadow(0 0 10px var(--accent));
+    padding: 40px;
+    border: 1px solid var(--cyan-dim);
+    background: var(--bg-panel);
+    box-shadow: 0 0 50px rgba(0, 255, 204, 0.1);
 }
 
 #gate-key {
     width: 100%;
-    background: #111;
-    border: 1px solid #333;
-    color: var(--accent);
-    padding: 15px;
-    font-family: inherit;
+    background: #000;
+    border: 1px solid #222;
+    color: var(--neon-cyan);
+    padding: 18px;
+    font-family: var(--font-stack);
     text-align: center;
-    font-size: 1.2rem;
-    letter-spacing: 5px;
+    font-size: 1.1rem;
+    letter-spacing: 8px; /* Spaced out for that 'code' look */
     outline: none;
-    margin-top: 20px;
+    margin-top: 25px;
+    transition: var(--transition);
 }
 
 #gate-key:focus {
-    border-color: var(--accent);
-    box-shadow: 0 0 15px rgba(0, 255, 204, 0.2);
+    border-color: var(--neon-cyan);
+    box-shadow: 0 0 20px var(--cyan-glow);
 }
 
-#gate-status {
-    margin-top: 20px;
-    font-size: 0.7rem;
-    letter-spacing: 2px;
+/* Proxy Input Terminal Layout */
+.input-container {
+    display: flex;
+    background: #000;
+    border: 1px solid #222;
+    padding: 5px;
+    margin: 30px auto;
+    max-width: 600px;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.5);
+}
+
+.input-prefix {
+    padding: 15px;
     color: #444;
+    font-size: 0.9rem;
+    font-weight: bold;
+}
+
+#proxy-url {
+    flex: 1;
+    background: transparent;
+    border: none;
+    color: #fff;
+    font-family: var(--font-stack);
+    font-size: 1rem;
+    outline: none;
+}
+
+/* Node/Button Grid */
+.quick-links {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 20px;
+    margin-top: 40px;
+}
+
+.node {
+    background: #0a0a0a;
+    border: 1px solid #1a1a1a;
+    color: #888;
+    padding: 12px;
+    font-family: var(--font-stack);
+    font-size: 0.8rem;
+    cursor: pointer;
+    text-transform: uppercase;
+    transition: var(--transition);
+}
+
+.node:hover {
+    border-color: var(--neon-cyan);
+    color: var(--neon-cyan);
+    background: rgba(0, 255, 204, 0.05);
 }
