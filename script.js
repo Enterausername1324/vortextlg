@@ -1,86 +1,45 @@
-(function () {
-    "use strict";
+"use strict";
 
-    const urlInput = document.getElementById("proxy-url");
-    const launchBtn = document.getElementById("launch-btn");
-    const nodes = document.querySelectorAll(".node");
+const urlInput = document.getElementById("url-input");
+const launchBtn = document.getElementById("launch-btn");
 
-    /**
-     * Launch Ultraviolet in an About:Blank stealth window
-     */
-    async function launchUV(targetUrl) {
-        if (!targetUrl) return;
+// Your specific Rammerhead Session ID
+const SESSION_ID = "7e81969e8dd6408180a7a7c6e2925873";
+// The public server hosting the engine
+const PROXY_SERVER = "https://demo-opensource.rammerhead.org";
 
-        let url = targetUrl.trim();
-        if (!url.startsWith('http')) url = 'https://' + url;
+function launchVortex() {
+    let targetUrl = urlInput.value.trim();
+    if (!targetUrl) return;
 
-        // 1. Register the UV Service Worker
-        // Ensure sw.js is in your root directory!
-        try {
-            await navigator.serviceWorker.register('./sw.js', {
-                scope: __uv$config.prefix
-            });
-        } catch (err) {
-            console.error("Failed to register Service Worker:", err);
-            alert("Security Error: Service Worker failed. Check if you are using HTTPS.");
-            return;
-        }
-
-        // 2. Open the Stealth Window
-        const win = window.open();
-        if (!win || win.closed) {
-            alert("POP-UP BLOCKED. Please enable pop-ups to use the terminal.");
-            return;
-        }
-
-        // 3. Apply Tab Cloak (Google Drive)
-        win.document.title = "Classes - Google Drive";
-        const favicon = win.document.createElement('link');
-        favicon.rel = 'icon';
-        favicon.href = 'https://ssl.gstatic.com/images/branding/product/1x/drive_2020q4_32dp.png';
-        win.document.head.appendChild(favicon);
-
-        const style = win.document.createElement('style');
-        style.textContent = `
-            body, html { margin: 0; padding: 0; width: 100%; height: 100%; overflow: hidden; background: #000; }
-            iframe { width: 100%; height: 100%; border: none; }
-        `;
-        win.document.head.appendChild(style);
-
-        // 4. Create the Iframe using UV encoding
-        const iframe = win.document.createElement('iframe');
-        iframe.src = __uv$config.prefix + __uv$config.encodeUrl(url);
-        win.document.body.appendChild(iframe);
-
-        // 5. Panic Redirect the original tab to look innocent
-        window.location.replace("https://google.com");
+    // Fix the URL if they forgot https
+    if (!targetUrl.startsWith('http')) {
+        targetUrl = 'https://' + targetUrl;
     }
 
-    // Event Listeners
-    if (launchBtn) launchBtn.addEventListener("click", () => launchUV(urlInput.value));
+    // Rammerhead format: {server}/main/{session}/{targetUrl}
+    const finalUrl = `${PROXY_SERVER}/main/${SESSION_ID}/${targetUrl}`;
+
+    // Open in a new stealth tab
+    const win = window.open();
+    if (!win) {
+        alert("Pop-up blocked! Please allow pop-ups for TIMELOOP.OS");
+        return;
+    }
+
+    win.document.body.style.margin = '0';
+    win.document.body.style.height = '100vh';
+    win.document.body.style.backgroundColor = '#000';
     
-    if (urlInput) {
-        urlInput.addEventListener("keypress", (e) => {
-            if (e.key === "Enter") launchUV(urlInput.value);
-        });
-    }
+    const iframe = win.document.createElement('iframe');
+    iframe.src = finalUrl;
+    iframe.style = "border:none;width:100%;height:100%;margin:0;padding:0;overflow:hidden;";
+    
+    win.document.body.appendChild(iframe);
+}
 
-    nodes.forEach(node => {
-        node.addEventListener("click", () => {
-            const site = node.innerText;
-            const map = { 
-                "DISCORD": "discord.com", 
-                "ROBLOX": "roblox.com", 
-                "INSTAGRAM": "instagram.com", 
-                "GEFORCE_NOW": "play.geforcenow.com" 
-            };
-            launchUV(map[site] || site.toLowerCase() + ".com");
-        });
-    });
-
-    // Global Panic Key (ESC)
-    document.addEventListener("keydown", (e) => {
-        if (e.key === "Escape") window.location.href = "https://google.com";
-    });
-
-})();
+// Bind the events
+launchBtn.onclick = launchVortex;
+urlInput.addEventListener("keypress", (e) => {
+    if (e.key === "Enter") launchVortex();
+});
