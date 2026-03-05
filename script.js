@@ -1,6 +1,6 @@
 "use strict";
 
-const SESSION_ID = "7e81969e8dd6408180a7a7c6e2925873";
+const SESSION_ID = "c372983ff3c24564b17313069451dec0";
 const PROXY_SERVER = "https://demo-opensource.rammerhead.org";
 
 const urlInput = document.getElementById("proxy-url");
