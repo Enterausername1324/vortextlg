@@ -4,75 +4,77 @@
 const SESSION_ID = "7e81969e8dd6408180a7a7c6e2925873";
 const PROXY_SERVER = "https://demo-opensource.rammerhead.org";
 
-// ELEMENT SELECTORS
+// Check if elements exist
 const urlInput = document.getElementById("proxy-url");
 const launchBtn = document.getElementById("launch-btn");
 const quickLinks = document.querySelectorAll(".node");
 
-/**
- * Core Launch Function
- */
-function launchVortex(destination) {
-    let target = destination || urlInput.value.trim();
-    if (!target) return;
+console.log("TIMELOOP_OS: Systems Check...");
 
-    // Add https if missing
+function launchVortex(destination) {
+    let target = destination || (urlInput ? urlInput.value.trim() : "");
+    
+    if (!target) {
+        alert("TERMINAL_ERROR: No destination entered.");
+        return;
+    }
+
+    // Fix URL
     if (!target.startsWith('http')) {
         target = 'https://' + target;
     }
 
     // Build the Rammerhead URL
     const finalUrl = `${PROXY_SERVER}/main/${SESSION_ID}/${target}`;
+    
+    console.log("Attempting to launch: " + finalUrl);
 
-    // Launch in a new tab (About:Blank Stealth)
-    const win = window.open();
-    if (win) {
-        win.document.body.style.margin = '0';
-        win.document.body.style.height = '100vh';
-        win.document.body.style.backgroundColor = '#000';
-        
-        const iframe = win.document.createElement('iframe');
-        iframe.src = finalUrl;
-        iframe.style = "border:none;width:100%;height:100%;margin:0;padding:0;overflow:hidden;";
-        
-        win.document.body.appendChild(iframe);
-    } else {
-        // Fallback if popups are blocked
+    // TRY METHOD 1: Stealth Tab (About:Blank)
+    try {
+        const win = window.open();
+        if (win) {
+            win.document.body.style.margin = '0';
+            win.document.body.style.height = '100vh';
+            win.document.body.style.backgroundColor = '#000';
+            const iframe = win.document.createElement('iframe');
+            iframe.src = finalUrl;
+            iframe.style = "border:none;width:100%;height:100%;margin:0;padding:0;overflow:hidden;";
+            win.document.body.appendChild(iframe);
+        } else {
+            // METHOD 2: Fallback to current tab if pop-up is blocked
+            console.log("Pop-up blocked. Redirecting current tab...");
+            window.location.href = finalUrl;
+        }
+    } catch (e) {
+        // METHOD 3: Emergency Redirect
         window.location.href = finalUrl;
     }
 }
 
-// Button Click
+// Attach Event Listeners
 if (launchBtn) {
-    launchBtn.onclick = () => launchVortex();
+    launchBtn.onclick = function() {
+        launchVortex();
+    };
 }
 
-// Enter Key
 if (urlInput) {
-    urlInput.addEventListener("keypress", (e) => {
+    urlInput.onkeydown = function(e) {
         if (e.key === "Enter") launchVortex();
-    });
+    };
 }
 
-// Quick Links (Discord, Roblox, etc.)
-quickLinks.forEach(button => {
-    button.onclick = () => {
-        const name = button.innerText.toUpperCase();
-        let site = "";
-
-        if (name.includes("DISCORD")) site = "discord.com";
-        else if (name.includes("ROBLOX")) site = "now.gg/apps/roblox-corporation/5349/roblox.html";
-        else if (name.includes("INSTAGRAM")) site = "instagram.com";
-        else if (name.includes("GEFORCE")) site = "play.geforcenow.com";
-        else site = name.toLowerCase() + ".com";
-
-        launchVortex(site);
+// Quick Links
+quickLinks.forEach(btn => {
+    btn.onclick = function() {
+        const text = btn.innerText.toLowerCase();
+        if (text.includes("discord")) launchVortex("discord.com");
+        else if (text.includes("roblox")) launchVortex("roblox.com");
+        else launchVortex(text + ".com");
     };
 });
 
-// Panic Key (ESC)
-window.onkeydown = (e) => {
-    if (e.key === "Escape") {
-        window.location.replace("https://classroom.google.com");
-    }
+// Panic Key
+window.onkeydown = function(e) {
+    if (e.key === "Escape") window.location.replace("https://google.com");
 };
