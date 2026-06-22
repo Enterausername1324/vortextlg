@@ -1,54 +1,255 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>TIMELOOP // VORTEX_TERMINAL</title>
-    <link rel="stylesheet" href="style.css">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Timeloop Vortex | Proxy Gateway</title>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+
+<style>
+  *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+  :root {
+    --bg: #0F0F0F;
+    --bg-2: #161616;
+    --bg-3: #1E1E1E;
+    --border: rgba(255,255,255,0.07);
+    --text: #E8E4DE;
+    --muted: #7A7670;
+    --orange: #FF6B1A;
+    --orange-d: #D95710;
+    --orange-g: rgba(255,107,26,0.08);
+  }
+
+  body {
+    font-family: 'Inter', sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    overflow-x: hidden;
+  }
+
+  /* NAV */
+  nav {
+    position: fixed; top: 0; left: 0; right: 0;
+    height: 68px; padding: 0 4rem;
+    display: flex; align-items: center; justify-content: space-between;
+    background: rgba(10,10,10,0.88); backdrop-filter: blur(16px);
+    border-bottom: 1px solid var(--border);
+    z-index: 100;
+  }
+  .nav-logo {
+    font-family: 'Orbitron', sans-serif;
+    font-size: 0.95rem; font-weight: 700;
+    letter-spacing: 0.18em; text-decoration: none;
+    color: var(--text);
+  }
+  .nav-logo span { color: var(--orange); }
+  .nav-links { display: flex; gap: 2.5rem; list-style: none; }
+  .nav-links a {
+    font-size: 0.75rem; font-weight: 500;
+    letter-spacing: 0.12em; text-transform: uppercase;
+    color: var(--muted); text-decoration: none;
+    transition: color 0.2s;
+  }
+  .nav-links a:hover, .nav-links a.active { color: var(--orange); }
+
+  /* HERO */
+  .hero {
+    padding: 10rem 4rem 6rem;
+    position: relative;
+    overflow: hidden;
+  }
+  .hero-grid-lines {
+    position: absolute; inset: 0; pointer-events: none;
+    background-image:
+      linear-gradient(rgba(255,107,26,0.03) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(255,107,26,0.03) 1px, transparent 1px);
+    background-size: 60px 60px;
+  }
+  .hero-bg {
+    position: absolute; top: 50%; right: -6%;
+    transform: translateY(-50%);
+    width: 580px; height: 580px; opacity: 0.1;
+    animation: spin 80s linear infinite;
+  }
+  @keyframes spin { from { transform: translateY(-50%) rotate(0deg); } to { transform: translateY(-50%) rotate(360deg); } }
+
+  .hero-content {
+    position: relative; z-index: 2;
+    max-width: 700px;
+    margin: 0 auto;
+    text-align: center;
+  }
+
+  .hero-eyebrow {
+    font-size: 0.65rem; font-weight: 600;
+    letter-spacing: 0.28em; text-transform: uppercase;
+    color: var(--orange);
+    display: inline-block;
+    padding: 0.4rem 0.9rem;
+    border: 1px solid rgba(255,107,26,0.4);
+    background: var(--orange-g);
+    margin-bottom: 1.5rem;
+  }
+
+  .hero-title {
+    font-family: 'Orbitron', sans-serif;
+    font-size: clamp(2.8rem, 6vw, 4.5rem);
+    font-weight: 900;
+    letter-spacing: -0.02em;
+    margin-bottom: 1.5rem;
+  }
+
+  .hero-sub {
+    font-size: 1.05rem;
+    color: var(--muted);
+    max-width: 520px;
+    margin: 0 auto 3rem;
+    line-height: 1.8;
+  }
+
+  /* PROXY PANEL */
+  .proxy-panel {
+    background: var(--bg-2);
+    border: 1px solid var(--border);
+    padding: 3rem;
+    border-radius: 4px;
+    max-width: 700px;
+    margin: 0 auto;
+    box-shadow: 0 0 40px rgba(255,107,26,0.05);
+  }
+
+  .input-container {
+    display: flex;
+    background: var(--bg-3);
+    border: 1px solid var(--border);
+    border-radius: 3px;
+    overflow: hidden;
+    margin-bottom: 2rem;
+  }
+  .input-prefix {
+    padding: 1rem 1.25rem;
+    font-size: 0.8rem;
+    letter-spacing: 0.1em;
+    color: var(--muted);
+    background: var(--bg-2);
+    border-right: 1px solid var(--border);
+  }
+  #proxy-url {
+    flex: 1;
+    padding: 1rem 1.25rem;
+    background: transparent;
+    border: none;
+    color: var(--text);
+    font-size: 0.9rem;
+    outline: none;
+  }
+  .sys-btn {
+    padding: 1rem 1.75rem;
+    background: var(--orange);
+    color: #fff;
+    border: none;
+    font-size: 0.75rem;
+    font-weight: 600;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    cursor: pointer;
+    transition: background 0.2s;
+  }
+  .sys-btn:hover { background: var(--orange-d); }
+
+  .quick-links {
+    display: flex;
+    justify-content: center;
+    gap: 1rem;
+    margin-top: 1.5rem;
+  }
+  .node {
+    padding: 0.7rem 1.4rem;
+    background: var(--bg-3);
+    border: 1px solid var(--border);
+    color: var(--muted);
+    font-size: 0.75rem;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    cursor: pointer;
+    transition: all 0.2s;
+  }
+  .node:hover {
+    border-color: var(--orange);
+    color: var(--orange);
+  }
+
+  /* FOOTER */
+  footer {
+    padding: 2rem 4rem;
+    text-align: center;
+    border-top: 1px solid var(--border);
+    background: var(--bg-2);
+    font-size: 0.75rem;
+    color: var(--muted);
+    margin-top: 6rem;
+  }
+</style>
 </head>
+
 <body>
 
-    <header class="sys-header">
-        <div class="sys-logo">TIMELOOP.OS</div>
-    </header>
+<nav>
+  <a href="index.html" class="nav-logo">TIME<span>LOOP</span></a>
+  <ul class="nav-links">
+    <li><a href="index.html">Home</a></li>
+    <li><a href="about.html">About</a></li>
+    <li><a href="https://store.timeloopthrill.com">Store</a></li>
+    <li><a href="contact.html">Contact</a></li>
+  </ul>
+</nav>
 
-    <main class="os-container">
-        <div class="os-terminal-window">
-            <div class="os-term-header">
-                <div class="dots">
-                    <span class="dot red"></span>
-                    <span class="dot yellow"></span>
-                    <span class="dot green"></span>
-                </div>
-                <div class="os-term-title">SECURE_UPLINK // VORTEX_GATEWAY</div>
-            </div>
-            
-            <div class="os-term-body">
-                <p class="term-log cyan">>> TUNNEL_STATUS: READY</p>
-                <h1 class="term-main-title">PROXY TERMINAL</h1>
-                
-                <div class="input-container">
-                    <div class="input-prefix">HTTPS://</div>
-                    <input type="text" id="proxy-url" placeholder="ENTER_DESTINATION..." autofocus>
-                    <button id="launch-btn" class="sys-btn">LAUNCH</button>
-                </div>
+<section class="hero">
+  <div class="hero-grid-lines"></div>
 
-                <div class="quick-links">
-                    <button class="node">DISCORD</button>
-                    <button class="node">ROBLOX</button>
-                    <button class="node">INSTAGRAM</button>
-                    <button class="node">GEFORCE_NOW</button>
-                </div>
+  <svg class="hero-bg" viewBox="0 0 500 500">
+    <circle cx="250" cy="250" r="230" fill="none" stroke="#FF6B1A" stroke-width="1.5"/>
+    <circle cx="250" cy="250" r="185" fill="none" stroke="#FF6B1A" stroke-width="0.5"/>
+    <circle cx="250" cy="250" r="140" fill="none" stroke="#FF6B1A" stroke-width="1.5"/>
+    <circle cx="250" cy="250" r="95" fill="none" stroke="#FF6B1A" stroke-width="0.5"/>
+    <circle cx="250" cy="250" r="50" fill="none" stroke="#FF6B1A" stroke-width="1.5"/>
+  </svg>
 
-                <p class="term-log footer-note">BYPASS_MODE: ABOUT_BLANK // ESC_TO_PANIC</p>
-            </div>
-        </div>
-    </main>
+  <div class="hero-content">
+    <div class="hero-eyebrow">Timeloop Utility Module</div>
+    <h1 class="hero-title">VORTEX PROXY GATEWAY</h1>
+    <p class="hero-sub">A secure Timeloop subsystem for redirecting outbound traffic through the Vortex relay. Enter a destination to initialize the tunnel.</p>
 
-    <footer class="sys-footer">
-        <p>TIMELOOP THRILL CORP // VORTEX ENGINE v2.0</p>
-    </footer>
+    <div class="proxy-panel">
+      <div class="input-container">
+        <div class="input-prefix">https://</div>
+        <input type="text" id="proxy-url" placeholder="ENTER_DESTINATION...">
+        <button class="sys-btn" id="launch-btn">Launch</button>
+      </div>
 
-    <script src="script.js"></script>
+      <div class="quick-links">
+        <button class="node">Discord</button>
+        <button class="node">Roblox</button>
+        <button class="node">Instagram</button>
+        <button class="node">GeForce Now</button>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer>
+  © 2026 Timeloop Games — Vortex Engine v2.0
+</footer>
+
+<script>
+document.getElementById("launch-btn").addEventListener("click", () => {
+  const url = document.getElementById("proxy-url").value.trim();
+  if(url) window.location.href = "https://" + url;
+});
+</script>
+
 </body>
 </html>
